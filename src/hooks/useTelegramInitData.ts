@@ -35,14 +35,11 @@ export function useTelegramInitData(): TelegramInitDataState {
 
             // Try to parse telegram_id from initData.user
             try {
-              const params: Record<string, string> = {};
-              data.split('&').forEach(part => {
-                const [key, value] = part.split('=');
-                params[key] = decodeURIComponent(value);
-              });
+              const params = new URLSearchParams(data);
+              const userParam = params.get('user');
 
-              if (params['user']) {
-                const userObj = JSON.parse(params['user']);
+              if (userParam) {
+                const userObj = JSON.parse(userParam);
                 if (userObj.id) {
                   setTelegramId(userObj.id);
                 }
